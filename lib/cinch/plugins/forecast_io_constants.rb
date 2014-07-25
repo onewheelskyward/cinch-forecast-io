@@ -1,4 +1,4 @@
-class ForecastIoConstants
+module ForecastIoConstants
   def key
     'weather'
   end

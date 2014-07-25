@@ -6,7 +6,6 @@ class ForecastIO
   include Cinch::Plugin
   include ForecastIoConstants
   include ForecastIOMethods
-  extend Cinch::HttpServer::Verbs
 
   match /(forecast)\s*(.*)$/i,                method: :execute
   match /(weather)\s*(.*)$/i,                 method: :execute
