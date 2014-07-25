@@ -2,7 +2,7 @@ require 'json'
 require 'httparty'
 require_relative 'http_server'
 require 'twilio-ruby'
-require_relative 'forecastio_methods'
+require_relative 'forecast_io_methods'
 
 class ForecastIO
   include Cinch::Plugin
