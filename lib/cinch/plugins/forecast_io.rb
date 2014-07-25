@@ -1,7 +1,4 @@
 require 'json'
-require 'httparty'
-require_relative 'http_server'
-require 'twilio-ruby'
 require_relative 'forecast_io_methods'
 require_relative 'forecast_io_constants'
 
