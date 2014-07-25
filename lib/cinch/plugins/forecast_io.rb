@@ -3,9 +3,11 @@ require 'httparty'
 require_relative 'http_server'
 require 'twilio-ruby'
 require_relative 'forecast_io_methods'
+require_relative 'forecast_io_constants'
 
 class ForecastIO
   include Cinch::Plugin
+  include ForecastIoConstants
   include ForecastIOMethods
   extend Cinch::HttpServer::Verbs
 
