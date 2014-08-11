@@ -408,7 +408,7 @@ module ForecastIOMethods
     if forecast['alerts']
       forecast['alerts'].each do |alert|
         alert['description'].match /\.\.\.(\w+)\.\.\./
-        str += "#{shorten_url(alert['uri'])}#{$1}\n"
+        str += "#{shorten_url(alert['uri'])}\n"
       end
     end
     str
