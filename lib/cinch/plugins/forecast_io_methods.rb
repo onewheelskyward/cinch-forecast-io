@@ -183,9 +183,9 @@ module ForecastIOMethods
       chars = %w[_ ☃ ☃ ☃ ☃ ☃] # Hat tip to hallettj@#pdxtech
     end
 
-    differential = data_points.max - data_points.min
+    # differential = data_points.max - data_points.min
 
-    str = get_dot_str(chars, data, data_points.min, differential, key)
+    str = get_dot_str(chars, data, data_points.min, 1, key)
 
     if range_colors
       str = get_colored_string(data, key, str, range_colors)
