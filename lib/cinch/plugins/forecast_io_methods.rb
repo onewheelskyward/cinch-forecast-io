@@ -60,18 +60,8 @@ module ForecastIOMethods
       when 'ansitemp'
         str = ansi_temp_forecast forecast
       when 'asciiwind'
-        if secondary_command == 'dir'
-          str = ansi_wind_direction_forecast forecast
-        else
-          str = ascii_wind_forecast forecast
-        end
+        str = ascii_wind_forecast forecast
       when 'ansiwind'
-        if secondary_command == 'dir'
-          str = ansi_wind_direction_forecast forecast
-        else
-          str = ansi_wind_forecast forecast
-        end
-      when 'winddir'
         str = ansi_wind_direction_forecast forecast
       when 'asciisun'
         str = ascii_sun_forecast forecast
@@ -301,7 +291,7 @@ module ForecastIOMethods
   def format_forecast_message(forecast)
     minute_forecast = forecast['minutely']['summary'].to_s.downcase.chop if forecast['minutely']
     "weather is currently #{get_temperature forecast['currently']['temperature']} " +
-        "and #{forecast['currently']['summary'].downcase}.  Winds out of the #{get_cardinal_direction_from_bearing forecast['currently']['windBearing']} at #{forecast['currently']['windSpeed']} mph. " +
+        "and #{forecast['currently']['summary'].downcase}.  Winds out of the #{get_cardinal_direction_from_bearing forecast['currently']['windBearing']} at #{get_speed(forecast['currently']['windSpeed'])}. " +
         "It will be #{minute_forecast}, and #{forecast['hourly']['summary'].to_s.downcase.chop}.  There are also #{forecast['currently']['ozone'].to_s} ozones."
     # daily.summary
   end
@@ -310,13 +300,13 @@ module ForecastIOMethods
     do_the_wind_thing(forecast, ascii_chars)
   end
 
-  def ansi_wind_forecast(forecast)
-    do_the_wind_thing(forecast, ansi_chars)
-  end
+  # def ansi_wind_forecast(forecast)
+  #   do_the_wind_thing(forecast, ansi_chars)
+  # end
 
   def ansi_wind_direction_forecast(forecast)
     str, data = do_the_wind_direction_thing(forecast)
-    "24h wind direction |#{str}| Range: #{data.min} - #{data.max} mph"
+    "24h wind direction |#{str}| Range: #{get_speed(data.min)} - #{get_speed(data.max)}"
   end
 
   def do_the_wind_thing(forecast, chars)
@@ -333,7 +323,7 @@ module ForecastIOMethods
 
     colored_str = get_colored_string(data, key, str, get_wind_range_colors)
 
-    "24h wind speed #{data.first['windSpeed']} mph |#{colored_str}| #{data.last['windSpeed']} mph  Range: #{data_points.min} - #{data_points.max} mph"
+    "24h wind speed #{get_speed(data.first['windSpeed'])} |#{colored_str}| #{get_speed(data.last['windSpeed'])}  Range: #{get_speed(data_points.min)} - #{get_speed(data_points.max)}"
   end
 
   def do_the_wind_direction_thing(forecast, hours = 24)
@@ -422,7 +412,7 @@ module ForecastIOMethods
     rs = compress_string(rain_str, 4)
 
     sun_chance = ((1 - forecast['daily']['data'][0]['cloudCover']) * 100).round
-    "#{get_temperature temps.first.round(2)} |#{temp_str}| #{get_temperature temps.last.round(2)} " + "/ #{winds.first}mph |#{wind_str}| #{winds.last}mph / #{sun_chance}% chance of sun / 60m rain |#{rs}|"
+    "#{get_temperature temps.first.round(2)} |#{temp_str}| #{get_temperature temps.last.round(2)} " + "/ #{get_speed(winds.first)} |#{wind_str}| #{get_speed(winds.last)} / #{sun_chance}% chance of sun / 60m rain |#{rs}|"
   end
 
   def get_forecast_io_results(query = '45.5252,-122.6751')
@@ -526,8 +516,20 @@ module ForecastIOMethods
     end
   end
 
+  def get_speed(speed_imperial)
+    if @scale == 'c'
+      kilometers(speed_imperial).to_s + ' kph'
+    else
+      speed_imperial.to_s + ' mph'
+    end
+  end
+
   def celcius(degreesF)
     (0.5555555556 * (degreesF.to_f - 32)).round(2)
+  end
+
+  def kilometers(speed_imperial)
+    (speed_imperial * 1.6).round(2)
   end
 
   def get_cardinal_direction_from_bearing(bearing)
