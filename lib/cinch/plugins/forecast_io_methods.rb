@@ -404,7 +404,7 @@ module ForecastIOMethods
       if day['precipType'] == 'snow'
         precip_type = 'snow'
       end
-      rains[] = day['precipProbability']
+      rains.push day['precipProbability']
     end
 
     # differential = maxtemps.max - maxtemps.min
