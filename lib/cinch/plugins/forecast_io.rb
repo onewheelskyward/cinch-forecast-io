@@ -24,10 +24,8 @@ class ForecastIO
   match /(winddir)\s*(.*)/i,                  method: :execute
   match /(asciisun)\s*(.*)/i,                 method: :execute
   match /(ansisun)\s*(.*)/i,                  method: :execute
-  match /(7dayrain)\s+(.*)/i,                 method: :execute
-  match /(7day)\s+(.*)/i,                     method: :execute
-  match /(7dayrain)/i,                        method: :execute
-  match /(7day)/i,                            method: :execute
+  match /(weeklyrain)\s*(.*)/i,               method: :execute
+  match /(7day)\s*(.*)/i,                     method: :execute
   match /(alerts)\s*(.*)/i,                   method: :execute
   match /(condi*t*i*o*n*s*)\s*(.*)/i,         method: :execute
   match /(rain)/i,                            method: :execute

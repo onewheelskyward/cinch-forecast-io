@@ -69,7 +69,7 @@ module ForecastIOMethods
         str = ansi_sun_forecast forecast
       when '7day'
         str = seven_day forecast
-      when '7dayrain'
+      when 'weeklyrain'
         str = seven_day_rain forecast
       when 'alerts'
         str = alerts forecast
