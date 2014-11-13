@@ -95,15 +95,15 @@ module ForecastIOMethods
   end
 
   def ansi_rain_forecast(forecast)
-    str = do_the_rain_chance_thing(forecast, ansi_chars, 'precipProbability', 'probability', get_rain_range_colors)
+    str, precip_type = do_the_rain_chance_thing(forecast, ansi_chars, 'precipProbability', 'probability', get_rain_range_colors)
     #msg.reply "|#{str}|  min-by-min rain prediction.  range |▁▃▅▇█▇▅▃▁| art by 'a-g-j' =~ s/-//g"
-    "rain probability #{(Time.now).strftime('%H:%M').to_s}|#{str}|#{(Time.now + 3600).strftime('%H:%M').to_s}"  #range |_.-•*'*•-._|
+    "#{precip_type} probability #{(Time.now).strftime('%H:%M').to_s}|#{str}|#{(Time.now + 3600).strftime('%H:%M').to_s}"  #range |_.-•*'*•-._|
   end
 
   def daily_rain_forecast(forecast)
-    str = do_the_daily_rain_chance_thing(forecast, ansi_chars, 'precipProbability', 'probability', get_rain_range_colors)
+    str, precip_type = do_the_daily_rain_chance_thing(forecast, ansi_chars, 'precipProbability', 'probability', get_rain_range_colors)
     #msg.reply "|#{str}|  min-by-min rain prediction.  range |▁▃▅▇█▇▅▃▁| art by 'a-g-j' =~ s/-//g"
-    "rain probability now |#{str}| this hour tomorrow"
+    "#{precip_type} probability now |#{str}| this hour tomorrow"
   end
 
   def daily_rain_intensity_forecast(forecast)
@@ -183,7 +183,7 @@ module ForecastIOMethods
       str = get_colored_string(data, key, str, range_colors)
     end
     #  - 28800
-    return str
+    return str, precip_type
   end
 
   def do_the_daily_rain_chance_thing(forecast, chars, key, type, range_colors = nil)
@@ -209,7 +209,7 @@ module ForecastIOMethods
       str = get_colored_string(data, key, str, range_colors)
     end
     #  - 28800
-    return str
+    return str, precip_type
   end
 
   def ascii_ozone_forecast(forecast)
